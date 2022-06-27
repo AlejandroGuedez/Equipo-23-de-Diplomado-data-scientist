@@ -1,0 +1,90 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import itertools\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "def plot_decision_boundary(model, X, y):\n",
+    "    X = X.T\n",
+    "    y = y.T\n",
+    "\n",
+    "    # Set min and max values and give it some padding\n",
+    "    x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1\n",
+    "    y_min, y_max = X[1, :].min() - 1, X[1, :].max() + 1\n",
+    "    h = 0.01\n",
+    "\n",
+    "    # Generate a grid of points with distance h between them\n",
+    "    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))\n",
+    "\n",
+    "    # Predict the function value for the whole grid\n",
+    "    Z = model(np.c_[xx.ravel(), yy.ravel()])\n",
+    "    Z = Z.reshape(xx.shape)\n",
+    "\n",
+    "    # Plot the contour and training examples\n",
+    "    plt.contourf(xx, yy, Z, cmap=plt.cm.ocean, alpha=0.5)\n",
+    "    #plt.contourf(xx, yy, Z, cmap=plt.cm.Pastel1, alpha=0.5)\n",
+    "    #plt.scatter(X[0, y==1], X[1, y==1], color=\"dodgerblue\", edgecolors='k', label=\"1\")\n",
+    "    plt.scatter(X[0, y==1], X[1, y==1], color=\"royalblue\", label=\"1\")\n",
+    "    plt.scatter(X[0, y==-1], X[1, y==-1], color=\"red\",  label=\"-1\")\n",
+    "    plt.legend()\n",
+    "\n",
+    "\n",
+    "def plot_confusion_matrix(cm, classes,\n",
+    "                          normalize=False,\n",
+    "                          title='Confusion matrix',\n",
+    "                          cmap=plt.cm.Blues):\n",
+    "    \"\"\"\n",
+    "    This function prints and plots the confusion matrix.\n",
+    "    Normalization can be applied by setting `normalize=True`.\n",
+    "    \"\"\"\n",
+    "    if normalize:\n",
+    "        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]\n",
+    "\n",
+    "    plt.imshow(cm, interpolation='nearest', cmap=cmap)\n",
+    "    plt.title(title)\n",
+    "    plt.colorbar()\n",
+    "    tick_marks = np.arange(len(classes))\n",
+    "    plt.xticks(tick_marks, classes, rotation=45)\n",
+    "    plt.yticks(tick_marks, classes)\n",
+    "\n",
+    "    fmt = '.2f' if normalize else 'd'\n",
+    "    thresh = cm.max() / 2.\n",
+    "    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):\n",
+    "        plt.text(j, i, format(cm[i, j], fmt),\n",
+    "                 horizontalalignment=\"center\",\n",
+    "                 color=\"white\" if cm[i, j] > thresh else \"black\")\n",
+    "\n",
+    "    plt.tight_layout()\n",
+    "    plt.ylabel('Etiqueta correcta')\n",
+    "    plt.xlabel('Etiqueta predicha')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
